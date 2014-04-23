@@ -1,0 +1,16 @@
+{% spaceless %}
+{% import _self as printer %}
+{{ printer.printError(form)}}
+{% endspaceless %}
+
+{% macro printError(form) %}
+{% spaceless %}
+    {% import _self as printer %}
+    {% for error in form.vars.errors %}
+        {{ error.message }}
+    {% endfor %}
+    {% for subform in form %}
+        {{ printer.printError(subform)}}
+    {% endfor %}
+{% endspaceless %}
+{% endmacro %}
