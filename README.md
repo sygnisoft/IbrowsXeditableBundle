@@ -55,7 +55,7 @@ Install & setup the bundle
 
     ```
             {% stylesheets
-                'bundles/ibrowsxeditable/x-editable/css/bootstrap-editable.css'
+                'bundles/ibrowsxeditable/css/bootstrap-editable.css'
             %}
                 <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
             {% endstylesheets %}
