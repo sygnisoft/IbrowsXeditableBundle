@@ -115,7 +115,7 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
             throw new \Exception("Path $path invalid");
         }
 
-        $value = isset($options['value']) ? $options['value'] : $form->getData();
+        $value = isset($options['value']) ? $options['value'] : $form->getViewData();
         $template = $this->getRenderTemplate($options);
 
         $attributes = array_merge(
