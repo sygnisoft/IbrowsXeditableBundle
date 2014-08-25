@@ -13,7 +13,6 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
      */
     protected $form;
 
-
     /**
      * @var bool
      */
@@ -34,7 +33,6 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
     {
         $this->renderFormPrototype = $renderFormPrototype;
     }
-
 
     /**
      * @param string $path
@@ -70,6 +68,26 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
         return $form;
     }
 
+    /**
+     * Get Value from options or form
+     * $options['value']
+     * or form->viewData if $options['viewData']
+     * default form->getData
+     * @param FormInterface $form
+     * @param $options
+     * @return mixed
+     */
+    protected function getValue(FormInterface $form, $options){
+        if( isset($options['value'])){
+            return $options['value'];
+        }
+        elseif(isset($options['viewData']) && $options['viewData']){
+            return $form->getViewData();
+        }
+        else{
+            return $form->getData();
+        }
+    }
     /**
      * @param FormInterface $form
      * @param array $attributes

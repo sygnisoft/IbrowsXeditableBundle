@@ -3,6 +3,7 @@
 namespace Ibrows\XeditableBundle\Mapper;
 
 use Ibrows\XeditableBundle\Model\XeditableMapperInterface;
+use Symfony\Component\Form\FormInterface;
 
 abstract class AbstractXeditableMapper implements XeditableMapperInterface
 {
@@ -10,6 +11,66 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
      * @var string
      */
     protected $url;
+    /**
+     * @var array
+     */
+    protected $options = array();
+
+    /**
+     * @var array
+     */
+    protected $attributes = array();
+
+    /**
+     * @param $key
+     * @param $attribute
+     */
+    public function setAttribute($key , $attribute)
+    {
+        $this->attributes[$key] = $attribute;
+    }
+
+    /**
+     * @param $key
+     * @param $option
+     */
+    public function setOption($key , $option)
+    {
+        $this->options[$key] = $option;
+    }
+
+    /**
+     * @param array $attributes
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes(array $attributesToMerge = array())
+    {
+        return array_merge($this->attributes, $attributesToMerge);
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(array $optionsToMerge = array())
+    {
+        return array_merge($this->options, $optionsToMerge);
+    }
+
 
     /**
      * @param string $url
@@ -34,7 +95,7 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
      * @param array $options
      * @return array
      */
-    protected function getViewParameters($path, $value, array $attributes = array(), array $options = array())
+    protected function getViewParameters(FormInterface $form, $path, $value, array $attributes = array(), array $options = array())
     {
         $attributes = array_merge(array(
             'data-path' => $path,
@@ -43,6 +104,7 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
         ), $attributes);
 
         return array(
+            'form' =>   $form->createView(),
             'options'       => $options,
             'attributes'    => $attributes,
             'value'         => $value

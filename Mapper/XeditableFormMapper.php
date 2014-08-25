@@ -22,11 +22,11 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
      */
     protected $validator;
 
-
     /**
      * @var array
      */
     protected $parameters = array();
+
 
     /**
      * @param FormInterface $form
@@ -99,9 +99,6 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
         $this->renderError($subform);
     }
 
-
-
-
     /**
      * @param string $path
      * @param array $attributes
@@ -114,8 +111,10 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
         if (!$form = $this->getFormByPath($path)) {
             throw new \Exception("Path $path invalid");
         }
+        $attributes = $this->getAttributes($attributes);
+        $options = $this->getOptions($options);
 
-        $value = isset($options['value']) ? $options['value'] : $form->getData();
+        $value = $this->getValue($form,$options);
         $template = $this->getRenderTemplate($options);
 
         $attributes = array_merge(
@@ -133,6 +132,7 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
         return $this->engine->render(
             $template,
             $this->getViewParameters(
+                $form,
                 $path,
                 $value,
                 $attributes,
@@ -154,7 +154,8 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
      */
     public function renderXeditable($path = null, array $attributes = array(), array $options = array())
     {
-
+        $attributes = $this->getAttributes($attributes);
+        $options = $this->getOptions($options);
         if (!$form = $this->getFormByPath($path,clone $this->form, true)) {
             throw new \Exception("Path $path invalid");
         }

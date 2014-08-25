@@ -15,10 +15,7 @@ class XeditableFormCollectionMapper extends AbstractFormXeditableMapper
     const ROUTE_KEY_DELETE = 'delete';
     const ROUTE_KEY_CREATE = 'create';
     const ROUTE_KEY_DEFAULT = self::ROUTE_KEY_EDIT;
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+
     /**
      * @var EngineInterface
      */
@@ -99,12 +96,13 @@ class XeditableFormCollectionMapper extends AbstractFormXeditableMapper
         if (!$form = $this->getFormByPath($path)) {
             throw new \Exception("Path $path invalid");
         }
+        $attributes = $this->getAttributes($attributes);
+        $options = $this->getOptions($options);
+        $values = $this->getValue($form,$options);
 
-        $values = isset($options['value']) ? $options['value'] : $form->getData();
         if (!$values instanceof Collection) {
             throw new \Exception("Path $path not a Collection");
         }
-
 
         $viewParameters = array();
         $suboptions = $options;
@@ -130,6 +128,8 @@ class XeditableFormCollectionMapper extends AbstractFormXeditableMapper
      */
     public function renderXeditable($path = null, array $attributes = array(), array $options = array())
     {
+        $attributes = $this->getAttributes($attributes);
+        $options = $this->getOptions($options);
         if (!$form = $this->getFormByPath($path, null, true, true)) {
             throw new \Exception("Path $path invalid");
         }
@@ -195,6 +195,7 @@ class XeditableFormCollectionMapper extends AbstractFormXeditableMapper
         }
 
         return $this->getViewParameters(
+            $this->form,
             $path,
             $value,
             $attributes,
