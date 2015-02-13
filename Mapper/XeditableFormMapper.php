@@ -53,12 +53,18 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
     protected function validate(FormInterface $subform){
         $path = (string)$subform->getPropertyPath();
         $parentData = null;
+        $validationGroups = array();
+
         if ($subform->getParent()) {
             $parentData = $subform->getParent()->getData();
+            $validationGroups = $subform->getParent()->getConfig()->getOption('validation_groups');
         } else {
             $parentData = $subform->getData();
+            $subform->getConfig()->getOption('validation_groups');
         }
-        $constraintViolationList = $this->validator->validateProperty($parentData, $path);
+
+        $constraintViolationList = $this->validator->validateProperty($parentData, $path, $validationGroups);
+
         if ($constraintViolationList->count() == 0) {
             return;
         } else {
@@ -90,13 +96,16 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
 
         if ($this->validator) {
             $this->validate($subform);
+            if($subform->isValid()){
+                return;
+            }
         } else {
             if ($this->form->isValid()) {
                 return;
             }
         }
 
-        $this->renderError($subform);
+        return $this->renderError($subform);
     }
 
     /**
