@@ -11,6 +11,7 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
      * @var string
      */
     protected $url;
+
     /**
      * @var array
      */
@@ -22,10 +23,18 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
     protected $attributes = array();
 
     /**
+     * @param string $url
+     */
+    public function __construct($url = null)
+    {
+        $this->url = $url;
+    }
+
+    /**
      * @param $key
      * @param $attribute
      */
-    public function setAttribute($key , $attribute)
+    public function setAttribute($key, $attribute)
     {
         $this->attributes[$key] = $attribute;
     }
@@ -34,9 +43,18 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
      * @param $key
      * @param $option
      */
-    public function setOption($key , $option)
+    public function setOption($key, $option)
     {
         $this->options[$key] = $option;
+    }
+
+    /**
+     * @param array $attributesToMerge
+     * @return array
+     */
+    public function getAttributes(array $attributesToMerge = array())
+    {
+        return array_merge($this->attributes, $attributesToMerge);
     }
 
     /**
@@ -48,11 +66,12 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
     }
 
     /**
+     * @param array $optionsToMerge
      * @return array
      */
-    public function getAttributes(array $attributesToMerge = array())
+    public function getOptions(array $optionsToMerge = array())
     {
-        return array_merge($this->attributes, $attributesToMerge);
+        return array_merge($this->options, $optionsToMerge);
     }
 
     /**
@@ -64,23 +83,6 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
     }
 
     /**
-     * @return array
-     */
-    public function getOptions(array $optionsToMerge = array())
-    {
-        return array_merge($this->options, $optionsToMerge);
-    }
-
-
-    /**
-     * @param string $url
-     */
-    public function __construct($url = null)
-    {
-        $this->url = $url;
-    }
-
-    /**
      * @return string
      */
     protected function getUrl()
@@ -89,6 +91,7 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
     }
 
     /**
+     * @param FormInterface $form
      * @param string $path
      * @param string $value
      * @param array $attributes
@@ -97,17 +100,20 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
      */
     protected function getViewParameters(FormInterface $form, $path, $value, array $attributes = array(), array $options = array())
     {
-        $attributes = array_merge(array(
-            'data-path' => $path,
-            'data-url'  => $this->getUrl(),
-            'data-type' => $this->getName(),
-        ), $attributes);
+        $attributes = array_merge(
+            array(
+                'data-path' => $path,
+                'data-url'  => $this->getUrl(),
+                'data-type' => $this->getName(),
+            ),
+            $attributes
+        );
 
         return array(
-            'form' =>   $form->createView(),
-            'options'       => $options,
-            'attributes'    => $attributes,
-            'value'         => $value
+            'form'       => $form->createView(),
+            'options'    => $options,
+            'attributes' => $attributes,
+            'value'      => $value
         );
     }
 }

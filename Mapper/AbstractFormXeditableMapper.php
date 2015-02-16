@@ -4,10 +4,10 @@ namespace Ibrows\XeditableBundle\Mapper;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
 abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
 {
-
     /**
      * @var FormInterface
      */
@@ -27,18 +27,11 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
     }
 
     /**
-     * @param boolean $renderFormPrototype
-     */
-    public function setRenderFormPrototype($renderFormPrototype)
-    {
-        $this->renderFormPrototype = $renderFormPrototype;
-    }
-
-    /**
      * @param string $path
      * @param null $form
      * @param bool $removeOther
      * @return FormInterface
+     * @throws \Exception
      */
     protected function getFormByPath($path, $form = null, $removeOther = false)
     {
@@ -77,17 +70,17 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
      * @param $options
      * @return mixed
      */
-    protected function getValue(FormInterface $form, $options){
-        if( isset($options['value'])){
+    protected function getValue(FormInterface $form, $options)
+    {
+        if (isset($options['value'])) {
             return $options['value'];
-        }
-        elseif(isset($options['viewData']) && $options['viewData']){
+        } elseif (isset($options['viewData']) && $options['viewData']) {
             return $form->getViewData();
-        }
-        else{
+        } else {
             return $form->getData();
         }
     }
+
     /**
      * @param FormInterface $form
      * @param array $attributes
@@ -97,46 +90,79 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
     protected function getEditParameters(FormInterface $form, array $attributes = array(), array $options = array())
     {
         return array(
-            'form' => $form->createView(),
+            'form'       => $form->createView(),
             'attributes' => $attributes,
-            'options' => $options
+            'options'    => $options
         );
     }
 
+    /**
+     * @return string
+     */
     protected function getErrorTemplate()
     {
         return 'IbrowsXeditableBundle::xeditableformerrors.html.twig';
     }
 
-    protected function renderError($subform = null)
+    /**
+     * @param FormInterface $subform
+     * @return Response
+     */
+    protected function renderError(FormInterface $subform = null)
     {
         $params = array(
             'form' => $this->form->createView(),
         );
+
         if ($subform) {
             $params['subform'] = $subform->createView();
         }
 
-        return new Response($this->engine->render(
-            $this->getErrorTemplate(),
-            $params
-        ), 400);
+        return new Response(
+            $this->getEngine()->render(
+                $this->getErrorTemplate(),
+                $params
+            ), 400
+        );
     }
 
-    protected function getRenderTemplate($options)
+    /**
+     * @return EngineInterface
+     */
+    abstract protected function getEngine();
+
+    /**
+     * @param array $options
+     * @return string
+     */
+    protected function getRenderTemplate(array $options = array())
     {
         return isset($options['template']) ? $options['template'] : 'IbrowsXeditableBundle::xeditable.html.twig';
     }
 
-
-    protected function getRenderFormPrototype($options)
+    /**
+     * @param array $options
+     * @return bool
+     */
+    protected function getRenderFormPrototype(array $options = array())
     {
-        return  array_key_exists('renderFormPrototype',$options) ? $options['renderFormPrototype'] : $this->renderFormPrototype;
+        return array_key_exists('renderFormPrototype', $options) ? $options['renderFormPrototype'] : $this->renderFormPrototype;
     }
 
-    protected function getFormTemplate($options)
+    /**
+     * @param boolean $renderFormPrototype
+     */
+    public function setRenderFormPrototype($renderFormPrototype)
+    {
+        $this->renderFormPrototype = $renderFormPrototype;
+    }
+
+    /**
+     * @param array $options
+     * @return string
+     */
+    protected function getFormTemplate(array $options = array())
     {
         return isset($options['template']) ? $options['template'] : 'IbrowsXeditableBundle::xeditableform.html.twig';
     }
-
 }
