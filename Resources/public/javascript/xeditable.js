@@ -37,10 +37,15 @@
                 $(this).data('form', newContent.data('form'));
             } : null;
 
+            var error = isIbrowsXeditableForm ? function (response, form) {
+                form.find('.editable-error-block').html(response.responseText);
+            } : null;
+
             var settings = $.extend({
                 send: isIbrowsXeditableForm ? 'always' : null,
                 params: params,
-                display: display
+                display: display,
+                error: error
             }, options);
 
             elem.editable(settings);
