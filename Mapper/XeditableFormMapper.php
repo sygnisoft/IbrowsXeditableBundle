@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class XeditableFormMapper extends AbstractFormXeditableMapper
@@ -175,7 +174,7 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
             $subform->getConfig()->getOption('validation_groups');
         }
 
-        foreach($subform as $subsubform){
+        foreach ($subform as $subsubform) {
             $this->validate($subsubform);
         }
 
@@ -194,37 +193,6 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
                     )
                 );
             }
-        }
-    }
-
-    protected function validateForm(FormInterface $subform, $parentData, array $validationGroups)
-    {
-        $constraintViolationList = $this->validator->validate($parentData, $validationGroups);
-        if ($constraintViolationList->count() == 0) {
-            return;
-        }
-
-        $validatePaths = array();
-        foreach ($subform as $subsubform) {
-            $validatePaths[] = (string)$subsubform->getPropertyPath();
-        }
-
-        /** @var ConstraintViolation $violation */
-        foreach ($constraintViolationList as $violation) {
-            $propertyPath = $violation->getPropertyPath();
-
-            if (!in_array($propertyPath, $validatePaths)) {
-                continue;
-            }
-
-            $subform->get($propertyPath)->addError(
-                new FormError(
-                    $violation->getMessage(),
-                    $violation->getMessageTemplate(),
-                    $violation->getMessageParameters(),
-                    $violation->getMessagePluralization()
-                )
-            );
         }
     }
 }
