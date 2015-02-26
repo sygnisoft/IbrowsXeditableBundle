@@ -178,9 +178,10 @@ class XeditableMapperFactory
      * @param mixed $data
      * @param object $currentObject
      * @param Request $request
+     * @param array $options
      * @return XeditableFormCollectionMapper
      */
-    public function createCollectionFormSimple($routeBaseName, $type = 'form', $data = null, $currentObject = null, Request $request = null)
+    public function createCollectionFormSimple($routeBaseName, $type = 'form', $data = null, $currentObject = null, Request $request = null, array $options = array())
     {
         $routeNames = array(
             XeditableFormCollectionMapper::ROUTE_KEY_EDIT   => $routeBaseName . '_' . XeditableFormCollectionMapper::ROUTE_KEY_EDIT,
@@ -189,7 +190,7 @@ class XeditableMapperFactory
         );
         $routeParams = array(XeditableFormCollectionMapper::ROUTE_KEY_DEFAULT => static::getForwardParameters($request));
 
-        return $this->createCollectionForm($routeNames, $routeParams, $type, $data, array(), $currentObject);
+        return $this->createCollectionForm($routeNames, $routeParams, $type, $data, $options, $currentObject);
     }
 
     /**
@@ -205,7 +206,7 @@ class XeditableMapperFactory
     {
         $options = array_merge($this->defaultOptions, $options);
 
-        $fcMapper = new XeditableFormCollectionMapper(
+        return new XeditableFormCollectionMapper(
             $this->formFactory->create($type, $data, $options),
             $currentObject,
             $routeNames,
@@ -213,7 +214,5 @@ class XeditableMapperFactory
             $this->engine,
             $this->router
         );
-
-        return $fcMapper;
     }
 }
