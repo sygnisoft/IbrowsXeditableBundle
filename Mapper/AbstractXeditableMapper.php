@@ -108,6 +108,9 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
             ),
             $attributes
         );
+        if($form->isDisabled()){
+            $attributes['data-disabled'] = $form->isDisabled();
+        }
 
         return array(
             'form'       => $form->createView(),
