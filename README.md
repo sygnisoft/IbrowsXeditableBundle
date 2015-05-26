@@ -64,33 +64,35 @@ Install & setup the bundle
 
 Basic Usage
 -----------
-    Get the factory and wrap your form with a xeditableFormMapper
+Get the factory and wrap your form with a xeditableFormMapper
 
-    ``` php
-        $factory = $this->get('ibrows_xeditable.mapper.factory');
-        $xeditableFormMapper = $factory->createFormFromRequest(
-           'user_xedit', //target route where data would be sent after submit
-            array('user' => $user->getId()), // parameters  for the target route
-            $request, // request to get information about the current view, to find forward paramters
-            new UserEditType(),  // a form type with a name and a firstName field
-            $user, // form data for the form type
-            array('validation_groups' => arrya('edit_user')) // form options for the form type
-        );
-    ```
+``` php
+$factory = $this->get('ibrows_xeditable.mapper.factory');
+$xeditableFormMapper = $factory->createFormFromRequest(
+   'user_xedit', //target route where data would be sent after submit
+    array('user' => $user->getId()), // parameters  for the target route
+    $request, // request to get information about the current view, to find forward paramters
+    new UserEditType(),  // a form type with a name and a firstName field
+    $user, // form data for the form type
+    array('validation_groups' => arrya('edit_user')) // form options for the form type
+);
+```
 
 
-   Then user the  xedit_inline_render function in twig to render the  xeditableFormMapper
 
-   XeditableMapperInterface $mapper, $formPath = null, array $attributes = array(), array $options = array()
+Then user the  xedit_inline_render function in twig to render the  xeditableFormMapper
 
-    ```
-          {{ xedit_inline_render(xeditableFormMapper, 'name', {'data-emptytext': 'userName'|trans}) }}
-          {{ xedit_inline_render(xeditableFormMapper, 'firstName', {'data-emptytext': 'firstName'|trans}) }}
+XeditableMapperInterface $mapper, $formPath = null, array $attributes = array(), array $options = array()
 
-    ```
+```
+  {{ xedit_inline_render(xeditableFormMapper, 'name', {'data-emptytext': 'userName'|trans}) }}
+  {{ xedit_inline_render(xeditableFormMapper, 'firstName', {'data-emptytext': 'firstName'|trans}) }}
 
-    Save the xedit all request from one form in a action
-    ``` php
+```
+
+Save the xedit all request from one form in a action
+
+``` php
         /**
          * @Route("/xedit/{user}", name="user_xedit")
          * @param User $user
@@ -124,4 +126,4 @@ Basic Usage
             // get back view of the handled form, to display error messages
             return new Response($xeditableFormMapper->renderXeditable($request->get('path')));
         }
-    ```
+```
