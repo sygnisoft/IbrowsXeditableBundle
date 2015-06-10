@@ -89,10 +89,8 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
      */
     protected function getEditParameters(FormInterface $form, array $attributes = array(), array $options = array())
     {
-        $parent = $form === $this->form ? null : $this->form->createView();
-
         return array(
-            'form'       => $form->createView($parent),
+            'form'       => $form->createView(),
             'attributes' => $attributes,
             'options'    => $options
         );
