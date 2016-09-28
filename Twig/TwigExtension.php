@@ -12,7 +12,7 @@ class TwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'xedit_inline_render' => new \Twig_Function_Method($this, 'xeditInlineRender', array('is_safe' => array('html')))
+            new \Twig_SimpleFunction('xedit_inline_render', array($this, 'xeditInlineRender'), array('is_safe' => array('html')))
         );
     }
 

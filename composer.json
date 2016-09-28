@@ -13,7 +13,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "symfony/symfony": "~2.1"
+        "symfony/symfony": "~3.0"
     },
     "autoload": {
         "psr-4": { "Ibrows\\XeditableBundle\\": "" }
