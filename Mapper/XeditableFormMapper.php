@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class XeditableFormMapper extends AbstractFormXeditableMapper
 {
@@ -60,7 +60,7 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
         $path = $request->request->get('path');
         $subform = $this->getFormByPath($path, null, true);
 
-        $this->form->submit($request, true);
+        $this->form->submit($request->request->get($this->form->getName()));
 
         if ($this->validator) {
             $this->validate($subform);
