@@ -104,7 +104,7 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
             array(
                 'data-path' => $path,
                 'data-url'  => $this->getUrl(),
-                'data-type' => $this->getName(),
+                'data-type' => 'text',
             ),
             $attributes
         );

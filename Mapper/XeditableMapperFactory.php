@@ -48,7 +48,7 @@ class XeditableMapperFactory
      * @param ValidatorInterface $validator
      * @param Router $router
      */
-    public function __construct(FormFactoryInterface $formFactory, EngineInterface $engine, ValidatorInterface $validator, Router $router)
+    public function __construct(FormFactoryInterface $formFactory, \Twig_Environment $engine, ValidatorInterface $validator, Router $router)
     {
         $this->formFactory = $formFactory;
         $this->engine = $engine;

@@ -34,7 +34,7 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
      * @param bool $validateExtra
      * @throws \Exception
      */
-    public function __construct(FormInterface $form, EngineInterface $engine, $url = null, $validator = null, $validateExtra = false)
+    public function __construct(FormInterface $form, \Twig_Environment $engine, $url = null, $validator = null, $validateExtra = false)
     {
         $this->form = $form;
         $this->engine = $engine;
@@ -103,10 +103,10 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
             $attributes
         );
 
-        if ($this->getRenderFormPrototype($options)) {
-            $rendredFormXeditable = $this->renderXeditable($path);
-            $attributes['data-form'] = $rendredFormXeditable;
-        }
+//        if ($this->getRenderFormPrototype($options)) {
+//            $rendredFormXeditable = $this->renderXeditable($path);
+//            $attributes['data-form'] = $rendredFormXeditable;
+//        }
 
         return $this->engine->render(
             $template,

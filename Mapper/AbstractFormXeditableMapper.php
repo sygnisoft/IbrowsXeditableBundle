@@ -137,7 +137,7 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
      */
     protected function getRenderTemplate(array $options = array())
     {
-        return isset($options['template']) ? $options['template'] : 'IbrowsXeditableBundle::xeditable.html.twig';
+        return isset($options['template']) ? $options['template'] : '@IbrowsXeditableBundle/xeditable.html.twig';
     }
 
     /**
@@ -163,6 +163,6 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
      */
     protected function getFormTemplate(array $options = array())
     {
-        return isset($options['template']) ? $options['template'] : 'IbrowsXeditableBundle::xeditableform.html.twig';
+        return isset($options['template']) ? $options['template'] : '@IbrowsXeditableBundle/xeditableform.html.twig';
     }
 }

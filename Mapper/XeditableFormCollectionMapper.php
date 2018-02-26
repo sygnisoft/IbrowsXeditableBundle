@@ -187,10 +187,10 @@ class XeditableFormCollectionMapper extends AbstractFormXeditableMapper
      */
     protected function getRenderCollectionSubFormTemplate($key, array $options = array())
     {
-        $default = 'IbrowsXeditableBundle::xeditableform.html.twig';
+        $default = 'IbrowsXeditableBundlexeditableform.html.twig';
 
         if ($key === self::ROUTE_KEY_DELETE) {
-            $default = 'IbrowsXeditableBundle::xeditableform_delete.html.twig';
+            $default = 'IbrowsXeditableBundle/xeditableform_delete.html.twig';
         }
 
         return isset($options['template_' . $key]) ? $options['template_' . $key] : $default;
