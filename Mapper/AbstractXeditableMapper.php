@@ -3,6 +3,9 @@
 namespace Ibrows\XeditableBundle\Mapper;
 
 use Ibrows\XeditableBundle\Model\XeditableMapperInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 
 abstract class AbstractXeditableMapper implements XeditableMapperInterface
@@ -100,11 +103,12 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
      */
     protected function getViewParameters(FormInterface $form, $path, $value, array $attributes = array(), array $options = array())
     {
+        $type = $this->guessType($form);
         $attributes = array_merge(
             array(
                 'data-path' => $path,
                 'data-url'  => $this->getUrl(),
-                'data-type' => 'text',
+                'data-type' => $type,
             ),
             $attributes
         );
@@ -118,5 +122,20 @@ abstract class AbstractXeditableMapper implements XeditableMapperInterface
             'attributes' => $attributes,
             'value'      => $value
         );
+    }
+
+    protected function guessType(FormInterface $form)
+    {
+        $innerType = $form->getConfig()->getType()->getInnerType();
+        switch (get_class($innerType)) {
+            case TextType::class:
+                $type ='text';
+                break;
+            default:
+                $type ='text';
+                break;
+        }
+
+        return $type;
     }
 }
