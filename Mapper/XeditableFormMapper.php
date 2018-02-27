@@ -183,13 +183,14 @@ class XeditableFormMapper extends AbstractFormXeditableMapper
         if ($constraintViolationList->count() == 0) {
             return;
         } else {
+            /* @var \Symfony\Component\Validator\ConstraintViolation $violation */
             foreach ($constraintViolationList as $violation) {
                 $subform->addError(
                     new FormError(
                         $violation->getMessage(),
                         $violation->getMessageTemplate(),
-                        $violation->getMessageParameters(),
-                        $violation->getMessagePluralization()
+                        $violation->getParameters(),
+                        $violation->getPlural()
                     )
                 );
             }

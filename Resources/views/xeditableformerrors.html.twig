@@ -7,7 +7,8 @@
     {% import _self as printer %}
     {% spaceless %}
         {% for error in form.vars.errors|default([]) %}
-            <div class="xeditable-error">{{ form_label(form) }}: {{ error.message }}</div>
+            {#<div class="xeditable-error">{{ form_label(form) }}: {{ error.message }}</div>#}
+            {{ error.message }}
         {% endfor %}
         {% for subform in form %}
             {{ printer.printError(subform) }}

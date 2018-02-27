@@ -101,7 +101,7 @@ abstract class AbstractFormXeditableMapper extends AbstractXeditableMapper
      */
     protected function getErrorTemplate()
     {
-        return 'IbrowsXeditableBundle::xeditableformerrors.html.twig';
+        return '@IbrowsXeditableBundle/xeditableformerrors.html.twig';
     }
 
     /**
